@@ -5,7 +5,7 @@ import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
-INPUT_DIR = 'detect_test'
+INPUT_DIR = 'prepared_dataset'
 OUTPUT_DIR = 'detect_output'
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)

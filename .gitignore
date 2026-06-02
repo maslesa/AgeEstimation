@@ -1,3 +1,7 @@
 .venv/
 __pycache__/
 models/
+scripts/detect_output
+scripts/prepared_dataset
+scripts/final_dataset.csv
+scripts/resnet_features.csv

@@ -1,6 +1,8 @@
 import os
+import pandas as pd
 import numpy as np
 from PIL import Image
+import random
 
 import torch
 import torch.nn as nn
@@ -11,10 +13,8 @@ from torchvision.models import (
     ResNet50_Weights
 )
 
-INPUT_DIR = 'detect_output'
-OUTPUT_DIR = 'extracted_features'
-
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+INPUT_DIR = 'prepared_dataset'
+OUTPUT_CSV = 'resnet_features.csv'
 
 weights = ResNet50_Weights.IMAGENET1K_V2
 
@@ -36,13 +36,18 @@ transform = transforms.Compose([
     )
 ])
 
+all_images = [
+    f for f in os.listdir(INPUT_DIR)
+    if f.lower().endswith(('.jpg', '.jpeg', '.png'))
+]
 
-for filename in os.listdir(INPUT_DIR):
+random.seed(42)
 
-    if not filename.lower().endswith(
-        ('.jpg', '.jpeg', '.png')
-    ):
-        continue
+selected_images = random.sample(all_images, len(all_images) // 2)
+
+rows = []
+
+for filename in selected_images:
 
     image_path = os.path.join(
         INPUT_DIR,
@@ -67,20 +72,22 @@ for filename in os.listdir(INPUT_DIR):
         -1
     )
 
-    features_numpy = features.numpy()
+    features = features.numpy().flatten()
 
-    output_filename = (
-        os.path.splitext(filename)[0]
-        + '.npy'
-    )
+    row = {
+        'image_name': filename
+    }
 
-    output_path = os.path.join(
-        OUTPUT_DIR,
-        output_filename
-    )
+    for i, value in enumerate(features):
+        row[f'features{i}'] = value
 
-    np.save(output_path, features_numpy)
+    rows.append(row)
 
-    print(f'Saved features: {output_path}')
+df = pd.DataFrame(rows)
+print(df.shape)
+print(df.head())
+
+df.to_csv(OUTPUT_CSV, index=False)
 
 print('\nFeature extraction completed.')
+print(f'Saved to {OUTPUT_CSV}.')
