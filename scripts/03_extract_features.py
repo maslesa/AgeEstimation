@@ -43,7 +43,7 @@ all_images = [
 
 random.seed(42)
 
-selected_images = random.sample(all_images, len(all_images) // 2)
+selected_images = random.sample(all_images, len(all_images))
 
 rows = []
 
