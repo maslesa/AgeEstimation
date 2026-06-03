@@ -24,9 +24,7 @@ metadata["image_name"] = (
     + metadata["original_image"]
 )
 
-features_df = pd.read_csv(
-    "resnet_features.csv"
-)
+features_df = pd.read_csv("resnet_features.csv")
 
 final_df = features_df.merge(
     metadata[
@@ -58,10 +56,7 @@ final_df["age_class"] = (
     .map(age_mapping)
 )
 
-final_df.to_csv(
-    "final_dataset.csv",
-    index=False
-)
+final_df.to_csv("final_dataset.csv", index=False)
 
 print(final_df.shape)
 

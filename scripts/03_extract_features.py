@@ -13,7 +13,7 @@ from torchvision.models import (
     ResNet50_Weights
 )
 
-INPUT_DIR = 'prepared_dataset'
+INPUT_DIR = 'detect_output'
 OUTPUT_CSV = 'resnet_features.csv'
 
 weights = ResNet50_Weights.IMAGENET1K_V2
